@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_261" class="java.beans.XMLDecoder">
+ <object class="myTrello.BList">
+  <void property="cards">
+   <object class="myTrello.HasMembersList"/>
+  </void>
+  <void property="name">
+   <string>listopher</string>
+  </void>
+  <void property="owner">
+   <object class="myTrello.User" id="User0">
+    <void property="boards">
+     <object class="myTrello.HasMembersList"/>
+    </void>
+    <void property="name">
+     <string>noah</string>
+    </void>
+    <void property="password">
+     <string>hunter2</string>
+    </void>
+   </object>
+  </void>
+  <void property="parentBoard">
+   <object class="myTrello.Board">
+    <void property="lists">
+     <object class="myTrello.HasMembersList"/>
+    </void>
+    <void property="members">
+     <object class="myTrello.HasMembersSet"/>
+    </void>
+    <void property="name">
+     <string>boarding school</string>
+    </void>
+    <void property="owner">
+     <object idref="User0"/>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
