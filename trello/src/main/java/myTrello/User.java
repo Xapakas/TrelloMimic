@@ -72,9 +72,7 @@ public class User
 		myBoard.setOwner(null);
 		return boards.removeMember(myBoard);
 	}
-	
-	/* XML Stuff */
-	
+		
 	public void storeToDisk()
 	{
 		XMLEncoder encoder = null;
@@ -100,17 +98,6 @@ public class User
 		User userInstance = (User) decoder.readObject();
 		return userInstance;
 	}
-
-//	@Override
-//	public int hashCode()
-//	{
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((boards == null) ? 0 : boards.hashCode());
-//		result = prime * result + ((name == null) ? 0 : name.hashCode());
-//		result = prime * result + ((password == null) ? 0 : password.hashCode());
-//		return result;
-//	}
 
 	@Override
 	public boolean equals(Object obj)

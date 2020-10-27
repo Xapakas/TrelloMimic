@@ -1,4 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_261" class="java.beans.XMLDecoder">
- <object class="myTrello.HasMembersSet"/>
+ <object class="myTrello.HasMembersSet" id="HasMembersSet0">
+  <void property="members">
+   <void method="add">
+    <object class="myTrello.User" id="User0">
+     <void property="boards">
+      <object class="myTrello.HasMembersList" id="HasMembersList0">
+       <void property="members">
+        <void method="add">
+         <object class="myTrello.Board">
+          <void property="lists">
+           <object class="myTrello.HasMembersList"/>
+          </void>
+          <void property="members">
+           <object class="myTrello.HasMembersSet" id="HasMembersSet1">
+            <void property="members">
+             <void method="add">
+              <object idref="User0"/>
+             </void>
+            </void>
+           </object>
+          </void>
+          <void property="name">
+           <string>otherBoard</string>
+          </void>
+          <void property="owner">
+           <object idref="User0"/>
+          </void>
+         </object>
+        </void>
+       </void>
+      </object>
+     </void>
+     <void property="name">
+      <string>throckmorton</string>
+     </void>
+     <void property="password">
+      <string>skating4lyfe</string>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="myTrello.User" id="User1">
+     <void property="boards">
+      <object class="myTrello.HasMembersList" id="HasMembersList1">
+       <void property="members">
+        <void method="add">
+         <object class="myTrello.Board">
+          <void property="lists">
+           <object class="myTrello.HasMembersList"/>
+          </void>
+          <void property="members">
+           <object idref="HasMembersSet0"/>
+          </void>
+          <void property="name">
+           <string>testBoard</string>
+          </void>
+          <void property="owner">
+           <object idref="User1"/>
+          </void>
+         </object>
+        </void>
+       </void>
+      </object>
+     </void>
+     <void property="name">
+      <string>noah</string>
+     </void>
+     <void property="password">
+      <string>hunter2</string>
+     </void>
+    </object>
+   </void>
+  </void>
+ </object>
 </java>

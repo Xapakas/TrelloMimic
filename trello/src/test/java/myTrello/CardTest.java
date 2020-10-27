@@ -36,6 +36,7 @@ class CardTest
 		board1 = new Board("boarderline personality disorder", noah);
 		list1 = new BList("listopher",board1);
 		card1 = new Card("cardy b",list1);
+		card2 = new Card("cardashian",list1);
 		label1 = new Label("libel");
 		label2 = new Label("label of lontents");
 		component1 = new Component("calm pown it", 5);
@@ -111,6 +112,8 @@ class CardTest
 	@Test
 	void testXML()
 	{
+		card1.addLabel(label1, card1.getOwner());
+		card1.addComponent(component1, card1.getOwner());
 		card1.storeToDisk();
 		Card diskCard = Card.loadFromDisk();
 		assertEquals(card1.equals(diskCard), true);

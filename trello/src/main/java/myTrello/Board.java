@@ -135,18 +135,6 @@ public class Board
 		return boardInstance;
 	}
 
-//	@Override
-//	public int hashCode()
-//	{
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((lists == null) ? 0 : lists.hashCode());
-//		result = prime * result + ((members == null) ? 0 : members.hashCode());
-//		result = prime * result + ((name == null) ? 0 : name.hashCode());
-//		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-//		return result;
-//	}
-
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -179,7 +167,7 @@ public class Board
 		{
 			if (other.owner != null)
 				return false;
-		} else if (!owner.equals(other.owner))
+		} else if (!owner.getName().equals(other.owner.getName()))
 			return false;
 		return true;
 	}

@@ -41,6 +41,11 @@ public class HasMembersList<T> implements HasMembers<T>
 		return members;
 	}
 	
+	public void setMembers(ArrayList<T> members)
+	{
+		this.members = members;
+	}
+	
 	public void storeToDisk()
 	{
 		XMLEncoder encoder = null;
@@ -54,7 +59,8 @@ public class HasMembersList<T> implements HasMembers<T>
 		encoder.close();
 	}
 	
-	public static HasMembersList<?> loadFromDisk()
+	@SuppressWarnings("rawtypes")
+	public static HasMembersList loadFromDisk()
 	{
 		XMLDecoder decoder=null;
 		try {
@@ -63,18 +69,9 @@ public class HasMembersList<T> implements HasMembers<T>
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: File HasMembersList.xml not found");
 		}
-		HasMembersList<?> hasMembersListInstance = (HasMembersList<?>) decoder.readObject();
+		HasMembersList hasMembersListInstance = (HasMembersList) decoder.readObject();
 		return hasMembersListInstance;
 	}
-
-//	@Override
-//	public int hashCode()
-//	{
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((members == null) ? 0 : members.hashCode());
-//		return result;
-//	}
 
 	@Override
 	public boolean equals(Object obj)
@@ -91,9 +88,15 @@ public class HasMembersList<T> implements HasMembers<T>
 		{
 			if (other.members != null)
 				return false;
-		} else if (!members.equals(other.members))
-			return false;
+		}
+		else if (members.size() != other.members.size()) return false;
+		else {
+			for (int i = 0; i < members.size(); i++) {
+				if (!members.get(i).equals(other.members.get(i))) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
-	
 }

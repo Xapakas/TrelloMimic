@@ -89,8 +89,6 @@ public class Card
 		}
 		return false;
 	}
-
-	/* getters and setters */
 	
 	public String getName()
 	{
@@ -151,9 +149,7 @@ public class Card
 	{
 		this.owner = owner;
 	}
-	
-	/* XML stuff */
-	
+		
 	public void storeToDisk()
 	{
 		XMLEncoder encoder = null;
@@ -179,20 +175,6 @@ public class Card
 		Card cardInstance = (Card) decoder.readObject();
 		return cardInstance;
 	}
-
-//	@Override
-//	public int hashCode()
-//	{
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((components == null) ? 0 : components.hashCode());
-//		result = prime * result + ((labels == null) ? 0 : labels.hashCode());
-//		result = prime * result + ((name == null) ? 0 : name.hashCode());
-//		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-//		result = prime * result + ((parentList == null) ? 0 : parentList.hashCode());
-//		result = prime * result + ((users == null) ? 0 : users.hashCode());
-//		return result;
-//	}
 
 	@Override
 	public boolean equals(Object obj)
@@ -226,14 +208,15 @@ public class Card
 		{
 			if (other.owner != null)
 				return false;
-		} else if (!owner.equals(other.owner))
+		} else if (!(owner.getName().equals(other.owner.getName())))
 			return false;
 		if (parentList == null)
 		{
 			if (other.parentList != null)
 				return false;
-		} else if (!parentList.equals(other.parentList))
+		} else if (!(parentList.getName().equals(other.parentList.getName()))) {
 			return false;
+		}
 		if (users == null)
 		{
 			if (other.users != null)

@@ -38,6 +38,11 @@ public class HasMembersSet<T> implements HasMembers<T>
 		return members;
 	}
 	
+	public void setMembers(HashSet<T> members)
+	{
+		this.members = members;
+	}
+	
 	public void storeToDisk()
 	{
 		XMLEncoder encoder = null;
@@ -51,6 +56,7 @@ public class HasMembersSet<T> implements HasMembers<T>
 		encoder.close();
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static HasMembersSet loadFromDisk()
 	{
 		XMLDecoder decoder=null;
@@ -63,15 +69,6 @@ public class HasMembersSet<T> implements HasMembers<T>
 		HasMembersSet hasMembersSetInstance = (HasMembersSet) decoder.readObject();
 		return hasMembersSetInstance;
 	}
-
-//	@Override
-//	public int hashCode()
-//	{
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((members == null) ? 0 : members.hashCode());
-//		return result;
-//	}
 
 	@Override
 	public boolean equals(Object obj)
@@ -88,9 +85,19 @@ public class HasMembersSet<T> implements HasMembers<T>
 		{
 			if (other.members != null)
 				return false;
-		} else if (!members.equals(other.members))
-			return false;
+		}
+		else if (!(members.size() == other.members.size()))
+		for (T member:members) {
+			boolean success = false;
+			for (T otherMember:other.members) {
+				if (member.equals(otherMember)) {
+					success = true;
+				}
+			}
+			if (!success) {
+				return false;
+			}
+		}
 		return true;
 	}
-
 }

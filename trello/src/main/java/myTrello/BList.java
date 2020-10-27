@@ -21,7 +21,7 @@ public class BList
 	{
 		this.name = name;
 		this.parentBoard = parentBoard;
-		cards = new HasMembersList<Card>(); // same warning as Board
+		cards = new HasMembersList<Card>();
 		owner = parentBoard.getOwner();
 		parentBoard.addList(this);
 	}
@@ -81,7 +81,6 @@ public class BList
 
 	public void setCards(HasMembersList<Card> cards)
 	{
-		// Don't use this method. It's just for XML.
 		this.cards = cards;
 	}
 
@@ -131,18 +130,6 @@ public class BList
 		return blistInstance;
 	}
 
-//	@Override
-//	public int hashCode()
-//	{
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((cards == null) ? 0 : cards.hashCode());
-//		result = prime * result + ((name == null) ? 0 : name.hashCode());
-//		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-//		result = prime * result + ((parentBoard == null) ? 0 : parentBoard.hashCode());
-//		return result;
-//	}
-
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -169,15 +156,9 @@ public class BList
 		{
 			if (other.owner != null)
 				return false;
-		} else if (!owner.equals(other.owner))
+		} else if (!owner.getName().equals(other.owner.getName())) {
 			return false;
-		if (parentBoard == null)
-		{
-			if (other.parentBoard != null)
-				return false;
-		} else if (!parentBoard.equals(other.parentBoard))
-			return false;
+		}
 		return true;
 	}
-	
 }
