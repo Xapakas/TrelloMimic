@@ -7,10 +7,11 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 
-public class Card
+public class Card implements Serializable
 {
-
+	private static final long serialVersionUID = 8523534582681907702L;
 	String name;
 	BList parentList;
 	HasMembersSet<Label> labels;

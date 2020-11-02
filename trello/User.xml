@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_261" class="java.beans.XMLDecoder">
  <object class="myTrello.User" id="User0">
-  <void property="boards">
+  <void property="boardsMemberOf">
    <object class="myTrello.HasMembersList" id="HasMembersList0">
     <void property="members">
      <void method="add">
-      <object class="myTrello.Board">
+      <object class="myTrello.Board" id="Board0">
        <void property="lists">
         <object class="myTrello.HasMembersList"/>
        </void>
@@ -25,6 +25,15 @@
         <object idref="User0"/>
        </void>
       </object>
+     </void>
+    </void>
+   </object>
+  </void>
+  <void property="boardsOwned">
+   <object class="myTrello.HasMembersList" id="HasMembersList1">
+    <void property="members">
+     <void method="add">
+      <object idref="Board0"/>
      </void>
     </void>
    </object>

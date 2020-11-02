@@ -7,9 +7,11 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 
-public class Label
+public class Label implements Serializable
 {
+	private static final long serialVersionUID = 3653095985724535130L;
 	String text;
 	
 	public Label() {}

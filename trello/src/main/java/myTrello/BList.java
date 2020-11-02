@@ -7,9 +7,12 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 
-public class BList
+public class BList implements Serializable
 {
+	private static final long serialVersionUID = 8096311933230518368L;
+	
 	String name;
 	HasMembersList<Card> cards;
 	Board parentBoard;

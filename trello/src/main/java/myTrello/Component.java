@@ -7,9 +7,11 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 
-public class Component
+public class Component implements Serializable
 {
+	private static final long serialVersionUID = -6837121773639431385L;
 	String description;
 	int maxCapacity;
 	

@@ -48,6 +48,8 @@ class BoardTest
 		hashy = h.getMembers();
 		assertEquals(hashy.contains(noah), true);
 		assertEquals(hashy.contains(throckmorton), true);
+		noah.boardsMemberOf.getMembers().contains(A);
+		noah.boardsMemberOf.getMembers().contains(A);
 		
 		assertEquals(A.removeMember(noah, throckmorton), false);
 		assertEquals(A.removeMember(throckmorton, noah), true);

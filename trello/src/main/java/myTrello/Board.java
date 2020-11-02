@@ -7,9 +7,11 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 
-public class Board
+public class Board implements Serializable
 {
+	private static final long serialVersionUID = -7916724492874775343L;
 	String name;
 	User owner;
 	HasMembersSet<User> members;
@@ -23,14 +25,15 @@ public class Board
 		this.owner = owner;
 		this.members = new HasMembersSet<User>();
 		this.lists = new HasMembersList<BList>();
-		owner.addBoard(this);
+		owner.addBoardOwned(this);
 		addMember(owner,owner);
 	}
 	
 	public boolean addMember(User addedUser, User requester)
 	{
 		if (requester == this.owner) {
-			return members.addMember(addedUser);
+			return (addedUser.addBoardMemberOf(this)
+					&& members.addMember(addedUser));
 		}
 		return false;
 	}
@@ -38,7 +41,8 @@ public class Board
 	public boolean removeMember(User removedUser, User requester)
 	{
 		if (requester == this.owner) {
-			return members.removeMember(removedUser);
+			return (removedUser.removeBoardMemberOf(this) 
+					&& members.removeMember(removedUser));
 		}
 		return false;
 	}
