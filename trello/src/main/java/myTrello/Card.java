@@ -14,7 +14,7 @@ public class Card implements Serializable
 	private static final long serialVersionUID = 8523534582681907702L;
 	String name;
 	BList parentList;
-	HasMembersSet<Label> labels;
+	HasMembersSet<BLabel> labels;
 	HasMembersList<User> users;
 	HasMembersList<Component> components;
 	User owner;
@@ -25,7 +25,7 @@ public class Card implements Serializable
 	{
 		this.name = name;
 		this.parentList = parentList;
-		labels = new HasMembersSet<Label>();
+		labels = new HasMembersSet<BLabel>();
 		users = new HasMembersList<User>();
 		components = new HasMembersList<Component>();
 		owner = parentList.getParentBoard().getOwner();
@@ -43,7 +43,7 @@ public class Card implements Serializable
 		return true;
 	}
 	
-	public boolean addLabel(Label newLabel, User requester)
+	public boolean addLabel(BLabel newLabel, User requester)
 	{
 		if (requester.equals(owner)) {
 			return labels.addMember(newLabel);
@@ -51,7 +51,7 @@ public class Card implements Serializable
 		return false;
 	}
 	
-	public boolean removeLabel(Label label, User requester)
+	public boolean removeLabel(BLabel label, User requester)
 	{
 		if (requester.equals(owner)) {
 			return labels.removeMember(label);
@@ -111,12 +111,12 @@ public class Card implements Serializable
 		this.parentList = parentList;
 	}
 
-	public HasMembersSet<Label> getLabels()
+	public HasMembersSet<BLabel> getLabels()
 	{
 		return labels;
 	}
 
-	public void setLabels(HasMembersSet<Label> labels)
+	public void setLabels(HasMembersSet<BLabel> labels)
 	{
 		this.labels = labels;
 	}

@@ -11,14 +11,15 @@ import myTrello.*;
 public class TrelloServer extends UnicastRemoteObject implements TrelloServerInterface
 {
 	private static final long serialVersionUID = 3001254035461836704L;
-	ArrayList<User> users = User.loadListFromDisk();
+//	ArrayList<User> users = User.loadListFromDisk();
+	ArrayList<User> users;
 
 	protected TrelloServer() throws RemoteException
 	{
 		
 	}
 
-	public User authenticateUser(String username, String password) throws RemoteException
+	public User authenticateUser(String username, String password, ArrayList<User> users) throws RemoteException
 	{
 		for (User user: users)
 		{
@@ -44,7 +45,7 @@ public class TrelloServer extends UnicastRemoteObject implements TrelloServerInt
 	public Board createBoard(String boardName, User requester) throws RemoteException
 	{
 		Board newBoard = new Board(boardName, requester);
-		User.storeListToDisk(users);
+//		User.storeListToDisk(users);
 		return newBoard;
 	}
 
@@ -55,7 +56,7 @@ public class TrelloServer extends UnicastRemoteObject implements TrelloServerInt
 			oldBoard.setMembers(newBoard.getMembers());
 			oldBoard.setName(newBoard.getName());
 			oldBoard.setOwner(newBoard.getOwner());
-			User.storeListToDisk(users);
+//			User.storeListToDisk(users);
 			return true;
 		}
 		return false;

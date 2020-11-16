@@ -18,13 +18,13 @@ class CardTest
 	User throckmorton;
 	Card card1;
 	Card card2;
-	Label label1;
-	Label label2;
+	BLabel label1;
+	BLabel label2;
 	Component component1;
 	Component component2;
 	ArrayList<User> userList;
 	ArrayList<Component> componentList;
-	HashSet<Label> labelSet;
+	HashSet<BLabel> labelSet;
 
 	boolean success;
 
@@ -37,8 +37,8 @@ class CardTest
 		list1 = new BList("listopher",board1);
 		card1 = new Card("cardy b",list1);
 		card2 = new Card("cardashian",list1);
-		label1 = new Label("libel");
-		label2 = new Label("label of lontents");
+		label1 = new BLabel("libel");
+		label2 = new BLabel("label of lontents");
 		component1 = new Component("calm pown it", 5);
 		component2 = new Component("comp own it", 3);
 	}
@@ -124,7 +124,7 @@ class CardTest
 	void testLabelXML()
 	{
 		label1.storeToDisk();
-		Label diskLabel = Label.loadFromDisk();
+		BLabel diskLabel = BLabel.loadFromDisk();
 		assertEquals(label1.equals(diskLabel), true);
 		assertEquals(label2.equals(diskLabel), false);
 	}
