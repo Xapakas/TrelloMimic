@@ -83,12 +83,12 @@ public class ViewTest
 	@Test
 	public void mainTest(FxRobot robot)
 	{
-//		loginInputs(robot,"Noah","hunter2","wrongservername");
-//		verifyPopupMessage(robot,"Server error: recheck server name and try again.");
-//		loginInputs(robot,"Noah","wrongpassword","localhost");
-//		verifyPopupMessage(robot,"Invalid username or password.");
-//		loginInputs(robot,"wrongusername","hunter2","localhost");
-//		verifyPopupMessage(robot,"Invalid username or password.");
+		loginInputs(robot,"Noah","hunter2","wrongservername");
+		verifyPopupMessage(robot,"Server error: recheck server name and try again.");
+		loginInputs(robot,"Noah","wrongpassword","localhost");
+		verifyPopupMessage(robot,"Invalid username or password.");
+		loginInputs(robot,"wrongusername","hunter2","localhost");
+		verifyPopupMessage(robot,"Invalid username or password.");
 		loginInputs(robot,"Hackerman","[hacker voice] i'm in","localhost");
 		
 		Assertions.assertThat(robot.lookup("#userNameLabel").
