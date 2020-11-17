@@ -1,14 +1,18 @@
 package views;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import main.Main;
 import myTrello.Board;
 import myTrello.User;
@@ -22,16 +26,17 @@ public class MainController
 	User currentUser;
 	Board currentBoard;
 	ToolbarController toolbar;
-	ArrayList<User> allUsers;
 	
 	public ArrayList<User> getAllUsers()
 	{
-		return allUsers;
-	}
-
-	public void setAllUsers(ArrayList<User> allUsers)
-	{
-		this.allUsers = allUsers;
+		try
+		{
+			return ts.getUsers();
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	boolean isUnsavedData;
@@ -39,6 +44,16 @@ public class MainController
 	public MainController(Stage stage)
 	{
 		this.stage = stage;
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent e) {
+				if (getIsUnsavedData())
+				{
+					showSavePopupView("You have unsaved data. Would you like "
+							+ "to save it before exiting?", "exit");
+				}
+			}
+		});
 	}
 	
 	public void setCurrentUser(User currentUser)
@@ -150,8 +165,8 @@ public class MainController
 			BoardController cont = loader.getController();
 			cont.setMC(this);
 			cont.setBoard(board);
-			cont.setupScene();
 			setCurrentBoard(board);
+			cont.setupScene();
 			
 			mainView.setCenter(view);
 			stage.setTitle("Showing board: " + board.getName());
@@ -188,7 +203,7 @@ public class MainController
 
 	}
 	
-	public void showSavePopupView(String message)
+	public void showSavePopupView(String message, String type)
 	{
 		Stage stage = new Stage();
 		
@@ -199,7 +214,7 @@ public class MainController
 		{
 			view = loader.load();
 			SavePopupController cont = loader.getController();
-			cont.setModel(message, stage, this);
+			cont.setModel(message, type, stage, this);
 			
 			Scene scene = new Scene(view);
 			stage.setScene(scene);
@@ -235,9 +250,67 @@ public class MainController
 		}
 	}
 	
+	public void showMoveItemPopup(String type)
+	{
+		Stage stage = new Stage();
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("../views/MoveItemPopup.fxml"));
+		VBox view;
+		try
+		{
+			view = loader.load();
+			MoveItemPopupController cont = loader.getController();
+			cont.setupScene(type, this, stage);
+			
+			Scene scene = new Scene(view);
+			stage.setScene(scene);
+			stage.setTitle("Please enter new data");
+			stage.show();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void updateBoard()
+	{
+		try
+		{
+			ts.updateBoard(currentBoard, currentBoard, 
+					currentUser);
+			currentBoard = ts.getBoard(currentBoard.getName(), currentUser);
+			setIsUnsavedData(true);
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeBoard(String boardName)
+	{
+		try
+		{
+			ts.removeBoard(boardName, currentUser);
+			setIsUnsavedData(true);
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void saveData()
 	{
-		User.storeListToDisk(getAllUsers());
+		System.out.println("mc is saving data");
+		try
+		{
+			ts.saveUsers();
+			setIsUnsavedData(false);
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void goBack()
@@ -247,7 +320,7 @@ public class MainController
     		if (getIsUnsavedData())
     		{
     			showSavePopupView("You are about to log out and have unsaved changes. "
-    					+ "Would you like to save?");
+    					+ "Would you like to save?", "back");
     		}
     		else
     		{
@@ -260,6 +333,11 @@ public class MainController
     		currentBoard = null;
     		showUserPage();
     	}
+	}
+	
+	public void exit()
+	{
+		stage.close();
 	}
 	
 }

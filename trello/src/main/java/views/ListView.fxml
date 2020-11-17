@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.VBox?>
 
-<TitledPane maxHeight="-Infinity" maxWidth="-Infinity" minWidth="150.0" onDragDetected="#TitledPane_OnDragDetected" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.ListController">
+<TitledPane maxHeight="-Infinity" maxWidth="-Infinity" minWidth="150.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.ListController">
    <content>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>

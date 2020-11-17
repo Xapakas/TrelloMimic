@@ -6,11 +6,13 @@ import views.MainController;
 
 public class Main extends Application
 {
+	MainController mc;
+	
 	@Override
 	public void start(Stage stage) throws Exception
 	{
-		MainController vt = new MainController(stage);
-		vt.showLoginPage();	
+		mc = new MainController(stage);
+		mc.showLoginPage();
 	}
 	
 	public static void main(String[] args)

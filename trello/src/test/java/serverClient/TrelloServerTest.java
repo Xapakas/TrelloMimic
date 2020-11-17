@@ -49,9 +49,9 @@ class TrelloServerTest
 		try
 		{
 			tp = (TrelloServerInterface) registry.lookup("TRELLO");
-			noah = tp.authenticateUser("Noah","hunter2", users);
+			noah = tp.authenticateUser("Noah","hunter2");
 			assertEquals((noah==null), false);
-			evildoer = tp.authenticateUser("Hackerman","wrongpassword", users);
+			evildoer = tp.authenticateUser("Hackerman","wrongpassword");
 			assertEquals((evildoer==null), true);
 			
 			board1 = tp.getBoard("testBoard", noah);

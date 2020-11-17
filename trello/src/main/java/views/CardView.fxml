@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<TitledPane animated="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="views.CardController">
+<TitledPane animated="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.CardController">
    <content>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <center>
@@ -50,12 +50,12 @@
          <bottom>
             <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="addLabel" fx:id="addLabelButton" mnemonicParsing="false" onAction="#onClickAddLabel" text="Add Label">
+                  <Button id="addLabelButton" fx:id="addLabelButton" mnemonicParsing="false" onAction="#onClickAddLabel" text="Add Label">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button id="addComponent" fx:id="addComponentButton" mnemonicParsing="false" onAction="#onClickAddComponent" text="Add Component">
+                  <Button id="addComponentButton" fx:id="addComponentButton" mnemonicParsing="false" onAction="#onClickAddComponent" text="Add Component">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>

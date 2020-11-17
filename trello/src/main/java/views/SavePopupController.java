@@ -20,26 +20,39 @@ public class SavePopupController
     
     Stage stage;
     MainController mc;
+    String type;
 
     @FXML
     void onClickDontSaveButton(ActionEvent event) 
     {
     	stage.close();
-    	mc.goBack();
+    	leave();
     }
 
     @FXML
     void onClickSaveButton(ActionEvent event) 
     {
     	mc.saveData();
-    	mc.setIsUnsavedData(false);
     	stage.close();
-    	mc.goBack();
+    	leave();
     }
     
-    public void setModel(String message, Stage stage, MainController mc)
+    private void leave()
+    {
+    	if (type.equals("back"))
+    	{
+    		mc.goBack();
+    	}
+    	else if (type.equals("exit"))
+    	{
+    		mc.exit();
+    	}
+    }
+    
+    public void setModel(String message, String type, Stage stage, MainController mc)
     {
     	messageLabel.setText(message);
+    	this.type = type;
     	this.stage = stage;
     	this.mc = mc;
     }

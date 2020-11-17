@@ -57,8 +57,9 @@ public class LoginController
 		{
 			registry = LocateRegistry.getRegistry(serverName);
 			ts = (TrelloServerInterface) registry.lookup("TRELLO");
-			mc.setAllUsers(User.loadListFromDisk());
-			user = ts.authenticateUser(username, password, mc.getAllUsers());
+//			mc.setAllUsers(User.loadListFromDisk());
+			ts.loadUsers();
+			user = ts.authenticateUser(username, password);
 			mc.setServer(ts);
 		} catch (RemoteException | NotBoundException e)
 		{

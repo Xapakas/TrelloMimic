@@ -30,6 +30,9 @@ public class UserController
     @FXML
     private Button submitNewBoardButton;
     
+    @FXML
+    private Button removeBoardButton;
+    
     ArrayList<Board> boards;
 	ObservableList<String> boardNames;
 	MainController mc;
@@ -37,7 +40,7 @@ public class UserController
 	public void setupScene()
 	{
 		userNameLabel.setText(mc.currentUser.getName());
-		boards = mc.currentUser.getBoardsMemberOf().getMembers();
+		boards = mc.currentUser.getBoardsMemberOf().getMembers(); // not server side
 		boardNames = FXCollections.observableArrayList();
 		
 		for (Board board : boards)
@@ -56,22 +59,54 @@ public class UserController
 	@FXML
     void onClickGoToBoard(ActionEvent event) {
 		String selectedBoardName = boardListView.getSelectionModel().getSelectedItem();
-		int index = boardNames.indexOf(selectedBoardName);
-		if (index != -1)
+		try
 		{
-			Board selectedBoard = boards.get(index);
+			Board selectedBoard = mc.ts.getBoard(selectedBoardName, 
+					mc.currentUser);
 			mc.showBoardPage(selectedBoard);
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
 		}
+//		int index = boardNames.indexOf(selectedBoardName);
+//		if (index != -1)
+//		{
+//			Board selectedBoard = boards.get(index);
+//			mc.showBoardPage(selectedBoard);
+//		}
+    }
+	
+	@FXML
+    void onClickRemoveBoard(ActionEvent event) 
+	{
+		String selectedBoardName = boardListView.getSelectionModel().getSelectedItem();
+		Board selectedBoard;
+		try // remove from client
+		{
+			selectedBoard = mc.ts.getBoard(selectedBoardName, 
+					mc.currentUser);
+			mc.currentUser.removeBoardMemberOf(selectedBoard);
+			mc.currentUser.removeBoardOwned(selectedBoard);
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+		mc.removeBoard(selectedBoardName); // remove from server
+		mc.setCurrentBoard(null);
+		setupScene(); // remake listview
     }
 	
 	@FXML
     void onClickSubmit(ActionEvent event) {
 		String newBoardName = newBoardText.getText();
-		System.out.println("hello");
+//		System.out.println("hello");
 		try
 		{
-			Board newBoard = mc.getServer().createBoard(newBoardName, mc.currentUser);
-			mc.setIsUnsavedData(true);
+			Board newBoard = mc.ts.createBoard(newBoardName, mc.currentUser);
+			mc.setCurrentBoard(newBoard);
+			mc.currentUser.addBoardOwned(newBoard);
+			mc.currentUser.addBoardMemberOf(newBoard);
+			mc.updateBoard();
 			boardNames.add(newBoard.getName());
 			boards = mc.currentUser.getBoardsMemberOf().getMembers();
 			newBoardText.setText("");

@@ -11,15 +11,35 @@ import myTrello.*;
 public class TrelloServer extends UnicastRemoteObject implements TrelloServerInterface
 {
 	private static final long serialVersionUID = 3001254035461836704L;
-//	ArrayList<User> users = User.loadListFromDisk();
 	ArrayList<User> users;
 
 	protected TrelloServer() throws RemoteException
 	{
 		
 	}
+	
+	public void loadUsers() throws RemoteException
+	{
+		users = User.loadListFromDisk();
+	}
 
-	public User authenticateUser(String username, String password, ArrayList<User> users) throws RemoteException
+	public ArrayList<User> getUsers() throws RemoteException
+	{
+		return users;
+	}
+
+	public void setUsers(ArrayList<User> users) throws RemoteException
+	{
+		this.users = users;
+	}
+	
+	public void saveUsers() throws RemoteException
+	{
+		System.out.println("TrelloServer is saving users");
+		User.storeListToDisk(users);
+	}
+
+	public User authenticateUser(String username, String password) throws RemoteException
 	{
 		for (User user: users)
 		{
@@ -32,8 +52,10 @@ public class TrelloServer extends UnicastRemoteObject implements TrelloServerInt
 		return null;
 	}
 
-	public Board getBoard(String boardName, User requester) throws RemoteException
+	public Board getBoard(String boardName, User requesterCopy) throws RemoteException
 	{
+		User requester = authenticateUser(requesterCopy.getName(), 
+				requesterCopy.getPassword());
 		for (Board board: requester.getBoardsMemberOf().getMembers()) {
 			if (board.getName().equals(boardName)) {
 				return board;
@@ -42,24 +64,33 @@ public class TrelloServer extends UnicastRemoteObject implements TrelloServerInt
 		return null;
 	}
 
-	public Board createBoard(String boardName, User requester) throws RemoteException
+	public Board createBoard(String boardName, User requesterCopy) throws RemoteException
 	{
+		User requester = authenticateUser(requesterCopy.getName(), 
+				requesterCopy.getPassword());
 		Board newBoard = new Board(boardName, requester);
-//		User.storeListToDisk(users);
 		return newBoard;
 	}
 
-	public boolean updateBoard(Board oldBoard, Board newBoard, User requester) throws RemoteException
+	public void updateBoard(Board oldBoardCopy, Board newBoard, 
+			User requesterCopy) throws RemoteException
 	{
-		if (oldBoard.getMembers().getMembers().contains(requester) && newBoard.getMembers().getMembers().contains(requester)) {
-			oldBoard.setLists(newBoard.getLists());
-			oldBoard.setMembers(newBoard.getMembers());
-			oldBoard.setName(newBoard.getName());
-			oldBoard.setOwner(newBoard.getOwner());
-//			User.storeListToDisk(users);
-			return true;
-		}
-		return false;
+		User requester = authenticateUser(requesterCopy.getName(), 
+				requesterCopy.getPassword());
+		Board oldBoard = getBoard(oldBoardCopy.getName(), requester);
+		oldBoard.setLists(newBoard.getLists());
+		oldBoard.setMembers(newBoard.getMembers());
+		oldBoard.setName(newBoard.getName());
+		oldBoard.setOwner(newBoard.getOwner());
+	}
+	
+	public void removeBoard(String boardName, User requesterCopy) throws RemoteException
+	{
+		User requester = authenticateUser(requesterCopy.getName(), 
+				requesterCopy.getPassword());
+		Board deadBoard = getBoard(boardName, requesterCopy);
+		requester.removeBoardMemberOf(deadBoard);
+		requester.removeBoardOwned(deadBoard);
 	}
 	
 	public static void main(String[] args)
