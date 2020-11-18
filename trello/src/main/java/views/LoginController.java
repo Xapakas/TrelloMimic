@@ -41,7 +41,7 @@ public class LoginController
 	@FXML
 	private Button closePopupButton;
 	
-	TrelloServerInterface ts;
+	TrelloServerInterface server;
 	Registry registry;
 	User user;
 	boolean connected;
@@ -56,11 +56,10 @@ public class LoginController
 		try
 		{
 			registry = LocateRegistry.getRegistry(serverName);
-			ts = (TrelloServerInterface) registry.lookup("TRELLO");
-//			mc.setAllUsers(User.loadListFromDisk());
-			ts.loadUsers();
-			user = ts.authenticateUser(username, password);
-			mc.setServer(ts);
+			server = (TrelloServerInterface) registry.lookup("TRELLO");
+			server.loadUsers();
+			user = server.authenticateUser(username, password);
+			mc.setServer(server);
 		} catch (RemoteException | NotBoundException e)
 		{
 			e.printStackTrace();

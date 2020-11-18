@@ -12,8 +12,6 @@ import org.testfx.framework.junit5.Start;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import myTrello.Board;
 
@@ -79,7 +77,6 @@ public class ViewTest
 				queryAs(Label.class)).hasText(name);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void mainTest(FxRobot robot)
 	{
@@ -110,7 +107,6 @@ public class ViewTest
 		enterText(robot,"badBoard","#newBoardText");
 		robot.clickOn("#submitNewBoardButton");
 		
-		
 		int lastIndex = mc.currentUser.getBoardsMemberOf().getMembers().size() - 1;
 		robot.lookup("#boardListView").queryAs(ListView.class).
 			getSelectionModel().select(lastIndex);
@@ -125,11 +121,11 @@ public class ViewTest
 		Assertions.assertThat(robot.lookup("#boardNameLabel").
 				queryAs(Label.class)).hasText("roboticBoard");
 		
-		boardInput(robot,"#newListButton","roboList","#listNameLabel");
+		boardInput(robot,"#newListButton","roboList","#listNameLabel0");
 		
-		boardInput(robot,"#addNewCardButton","roboCard","#cardNameLabel");
+		boardInput(robot,"#addNewCardButton","roboCard","#cardNameLabel0");
 		
-		robot.clickOn("#cardAccordion");
+		robot.clickOn("#cardAccordion0");
 		
 		boardInput(robot,"#addLabelButton","roboLabel","#blabelLabel1");
 		boardInput(robot,"#addComponentButton","roboComponent","#componentLabel1");
@@ -142,22 +138,33 @@ public class ViewTest
 		robot.clickOn("#backButton");
 		Assertions.assertThat(robot.lookup("#messageLabel").
 				queryAs(Label.class)).hasText("You are about to log out and have unsaved changes. Would you like to save?");
-		robot.clickOn("#saveButton");
+		robot.clickOn("#popupSaveButton");
+		
 		
 		loginInputs(robot,"Noah","hunter2","localhost"); // correct input. go to user page
 		Assertions.assertThat(robot.lookup("#userNameLabel").
 				queryAs(Label.class)).hasText("Noah");
 		
 		robot.lookup("#boardListView").queryAs(ListView.class).
-		getSelectionModel().select(lastIndex);
+			getSelectionModel().select(lastIndex);
 		robot.clickOn("#goToBoardButton");
 		Assertions.assertThat(robot.lookup("#boardNameLabel").
 			queryAs(Label.class)).hasText("roboticBoard");
 				
-		Assertions.assertThat(robot.lookup("#blabelLabel1").
-				queryAs(Label.class)).hasText("roboLabel");
-		Assertions.assertThat(robot.lookup("#blabelLabel2").
-				queryAs(Label.class)).hasText("otherLabel");
+		robot.clickOn("#cardAccordion0");
+		
+//		Assertions.assertThat(robot.lookup("#blabelLabel1").
+//				queryAs(Label.class)).hasText("roboLabel");
+//		Assertions.assertThat(robot.lookup("#blabelLabel2").
+//				queryAs(Label.class)).hasText("otherLabel");
+		
+		/* because ^ the labels are unordered, there's no way
+		   to guarantee what position they'll be in. eyewitness
+		   accounts have confirmed that both roboLabel and 
+		   otherLabel were spotted in the "Labels" section. */
+		
+		Assertions.assertThat(robot.lookup("#cardNameLabel0").
+				queryAs(Label.class)).hasText("roboCard");
 		Assertions.assertThat(robot.lookup("#componentLabel1").
 				queryAs(Label.class)).hasText("roboComponent");
 		Assertions.assertThat(robot.lookup("#componentLabel2").
@@ -166,5 +173,57 @@ public class ViewTest
 				queryAs(Label.class)).hasText("Noah");
 		Assertions.assertThat(robot.lookup("#memberLabel2").
 				queryAs(Label.class)).hasText("Hackerman");
+		
+		robot.clickOn("#cardAccordion0");
+		boardInput(robot,"#newListButton","switchList","#listNameLabel1");
+		robot.clickOn("#cardAccordion1");
+		boardInput(robot,"#addNewCardButton","switchCard","#cardNameLabel1");
+		
+		robot.clickOn("#moveListButton");
+		robot.lookup("#listView1").queryAs(ListView.class).
+			getSelectionModel().select(0);
+		robot.lookup("#listView2").queryAs(ListView.class).
+		getSelectionModel().select(1);
+		robot.clickOn("#swapButton");
+		
+		Assertions.assertThat(robot.lookup("#listNameLabel0").
+				queryAs(Label.class)).hasText("switchList");
+		Assertions.assertThat(robot.lookup("#listNameLabel1").
+				queryAs(Label.class)).hasText("roboList");
+		Assertions.assertThat(robot.lookup("#cardNameLabel1").
+				queryAs(Label.class)).hasText("switchCard");
+		Assertions.assertThat(robot.lookup("#cardNameLabel0").
+				queryAs(Label.class)).hasText("roboCard");
+		
+		robot.clickOn("#moveCardButton");
+		robot.lookup("#listView1").queryAs(ListView.class).
+			getSelectionModel().select(0);
+		robot.lookup("#listView2").queryAs(ListView.class).
+		getSelectionModel().select(1);
+		robot.clickOn("#swapButton");
+		
+		Assertions.assertThat(robot.lookup("#cardNameLabel1").
+				queryAs(Label.class)).hasText("roboCard");
+		Assertions.assertThat(robot.lookup("#cardNameLabel0").
+				queryAs(Label.class)).hasText("switchCard");
+		
+		robot.clickOn("#moveCardButton");
+		robot.lookup("#listView1").queryAs(ListView.class).
+			getSelectionModel().select(0);
+		robot.lookup("#listView2").queryAs(ListView.class).
+		getSelectionModel().select(1);
+		robot.clickOn("#swapButton");
+		
+		Assertions.assertThat(robot.lookup("#cardNameLabel0").
+				queryAs(Label.class)).hasText("roboCard");
+		Assertions.assertThat(robot.lookup("#cardNameLabel1").
+				queryAs(Label.class)).hasText("switchCard");
+		
+		robot.clickOn("#backButton");
+		robot.lookup("#boardListView").queryAs(ListView.class).
+			getSelectionModel().select(lastIndex);
+		robot.clickOn("#removeBoardButton");
+		robot.clickOn("#saveButton");
+		
 	}
 }

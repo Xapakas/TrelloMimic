@@ -28,7 +28,6 @@ public class ToolbarController
     @FXML
     void onClickSave(ActionEvent event) 
     {
-    	System.out.println("you clicked save");
     	mc.saveData();
     }
 

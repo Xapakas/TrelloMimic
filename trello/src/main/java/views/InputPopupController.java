@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class InputPopupController
 {
-	ControllerInterface parentCont;
+	ControllerInterface parentController;
 	Stage stage;
 	
     @FXML
@@ -25,13 +25,13 @@ public class InputPopupController
     void onClickSubmit(ActionEvent event) 
     {
     	String inputText = inputTextField.getText();
-    	parentCont.receiveString(inputText);
+    	parentController.receiveString(inputText);
     	stage.close();
     }
     
-    public void setModel(String message, Stage stage, ControllerInterface parentCont)
+    public void setModel(String message, Stage stage, ControllerInterface parentController)
     {
-    	this.parentCont = parentCont;
+    	this.parentController = parentController;
     	this.stage = stage;
     	messageLabel.setText(message);
     }

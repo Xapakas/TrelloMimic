@@ -1,6 +1,5 @@
 package views;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -39,8 +38,8 @@ public class UserController
     
 	public void setupScene()
 	{
-		userNameLabel.setText(mc.currentUser.getName());
-		boards = mc.currentUser.getBoardsMemberOf().getMembers(); // not server side
+		userNameLabel.setText(mc.getCurrentUser().getName());
+		boards = mc.getCurrentUser().getBoardsMemberOf().getMembers();
 		boardNames = FXCollections.observableArrayList();
 		
 		for (Board board : boards)
@@ -59,38 +58,20 @@ public class UserController
 	@FXML
     void onClickGoToBoard(ActionEvent event) {
 		String selectedBoardName = boardListView.getSelectionModel().getSelectedItem();
-		try
+		if (selectedBoardName != null)
 		{
-			Board selectedBoard = mc.ts.getBoard(selectedBoardName, 
-					mc.currentUser);
+			Board selectedBoard = mc.getBoard(selectedBoardName, mc.getCurrentUser());
 			mc.showBoardPage(selectedBoard);
-		} catch (RemoteException e)
-		{
-			e.printStackTrace();
 		}
-//		int index = boardNames.indexOf(selectedBoardName);
-//		if (index != -1)
-//		{
-//			Board selectedBoard = boards.get(index);
-//			mc.showBoardPage(selectedBoard);
-//		}
     }
 	
 	@FXML
     void onClickRemoveBoard(ActionEvent event) 
 	{
 		String selectedBoardName = boardListView.getSelectionModel().getSelectedItem();
-		Board selectedBoard;
-		try // remove from client
-		{
-			selectedBoard = mc.ts.getBoard(selectedBoardName, 
-					mc.currentUser);
-			mc.currentUser.removeBoardMemberOf(selectedBoard);
-			mc.currentUser.removeBoardOwned(selectedBoard);
-		} catch (RemoteException e)
-		{
-			e.printStackTrace();
-		}
+		Board selectedBoard = mc.getBoard(selectedBoardName, mc.getCurrentUser());
+		mc.getCurrentUser().removeBoardMemberOf(selectedBoard);
+		mc.getCurrentUser().removeBoardOwned(selectedBoard);
 		mc.removeBoard(selectedBoardName); // remove from server
 		mc.setCurrentBoard(null);
 		setupScene(); // remake listview
@@ -99,20 +80,20 @@ public class UserController
 	@FXML
     void onClickSubmit(ActionEvent event) {
 		String newBoardName = newBoardText.getText();
-//		System.out.println("hello");
-		try
+		if (boardNames.contains(newBoardName))
 		{
-			Board newBoard = mc.ts.createBoard(newBoardName, mc.currentUser);
+			mc.showPopupView("Board must have a unique name.");
+		}
+		else
+		{
+			Board newBoard = mc.createBoard(newBoardName, mc.getCurrentUser());
 			mc.setCurrentBoard(newBoard);
-			mc.currentUser.addBoardOwned(newBoard);
-			mc.currentUser.addBoardMemberOf(newBoard);
+			mc.getCurrentUser().addBoardOwned(newBoard);
+			mc.getCurrentUser().addBoardMemberOf(newBoard);
 			mc.updateBoard();
 			boardNames.add(newBoard.getName());
-			boards = mc.currentUser.getBoardsMemberOf().getMembers();
+			boards = mc.getCurrentUser().getBoardsMemberOf().getMembers();
 			newBoardText.setText("");
-		} catch (RemoteException e)
-		{
-			e.printStackTrace();
 		}
     }
 }

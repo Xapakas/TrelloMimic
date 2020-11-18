@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,24 +20,11 @@ import serverClient.TrelloServerInterface;
 public class MainController
 {
 	Stage stage;
-	TrelloServerInterface ts;
+	TrelloServerInterface server;
 	BorderPane mainView;
 	User currentUser;
 	Board currentBoard;
 	ToolbarController toolbar;
-	
-	public ArrayList<User> getAllUsers()
-	{
-		try
-		{
-			return ts.getUsers();
-		} catch (RemoteException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	boolean isUnsavedData;
 	
 	public MainController(Stage stage)
@@ -55,42 +41,7 @@ public class MainController
 			}
 		});
 	}
-	
-	public void setCurrentUser(User currentUser)
-	{
-		this.currentUser = currentUser;
-	}
-	
-	public void setCurrentBoard(Board currentBoard)
-	{
-		this.currentBoard = currentBoard;
-	}
-	
-	public Board getCurrentBoard()
-	{
-		return currentBoard;
-	}
-	
-	public void setServer(TrelloServerInterface ts)
-	{
-		this.ts = ts;
-	}
-	
-	public TrelloServerInterface getServer()
-	{
-		return ts;
-	}
-	
-	public void setIsUnsavedData(boolean isUnsavedData)
-	{
-		this.isUnsavedData = isUnsavedData;
-	}
-	
-	public boolean getIsUnsavedData()
-	{
-		return isUnsavedData;
-	}
-	
+		
 	public void showLoginPage()
 	{
 		FXMLLoader loader = new FXMLLoader();
@@ -106,7 +57,6 @@ public class MainController
 			stage.setScene(s);
 			stage.setTitle("Login to our Trello...");
 			stage.show();
-			
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -148,7 +98,6 @@ public class MainController
 			
 			mainView.setCenter(view);
 			stage.setTitle("Showing user: " + currentUser.getName());
-			
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -170,7 +119,6 @@ public class MainController
 			
 			mainView.setCenter(view);
 			stage.setTitle("Showing board: " + board.getName());
-			
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -180,14 +128,12 @@ public class MainController
 	public void showPopupView(String message)
 	{
 		Stage stage = new Stage();
-		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("../views/PopupView.fxml"));
 		VBox view;
 		try
 		{
 			view = loader.load();
-			
 			PopupController cont = loader.getController();
 			cont.setModel(message,stage);
 			
@@ -195,7 +141,6 @@ public class MainController
 			stage.setScene(scene);
 			stage.setTitle(":(");
 			stage.show();
-			
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -278,9 +223,7 @@ public class MainController
 	{
 		try
 		{
-			ts.updateBoard(currentBoard, currentBoard, 
-					currentUser);
-			currentBoard = ts.getBoard(currentBoard.getName(), currentUser);
+			server.updateBoard(currentBoard, currentBoard, currentUser);
 			setIsUnsavedData(true);
 		} catch (RemoteException e)
 		{
@@ -292,7 +235,7 @@ public class MainController
 	{
 		try
 		{
-			ts.removeBoard(boardName, currentUser);
+			server.removeBoard(boardName, currentUser);
 			setIsUnsavedData(true);
 		} catch (RemoteException e)
 		{
@@ -300,12 +243,35 @@ public class MainController
 		}
 	}
 	
-	public void saveData()
+	public Board getBoard(String boardName, User requester)
 	{
-		System.out.println("mc is saving data");
 		try
 		{
-			ts.saveUsers();
+			return server.getBoard(boardName, requester);
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Board createBoard(String boardName, User requester)
+	{
+		try
+		{
+			return server.createBoard(boardName, requester);
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void saveData()
+	{
+		try
+		{
+			server.saveUsers();
 			setIsUnsavedData(false);
 		} catch (RemoteException e)
 		{
@@ -325,6 +291,7 @@ public class MainController
     		else
     		{
     			currentUser = null;
+    			currentBoard = null;
     			showLoginPage();
     		}
     	}
@@ -338,6 +305,90 @@ public class MainController
 	public void exit()
 	{
 		stage.close();
+	}
+	
+	/* getters and setters*/
+
+	public Stage getStage()
+	{
+		return stage;
+	}
+
+	public void setStage(Stage stage)
+	{
+		this.stage = stage;
+	}
+
+	public TrelloServerInterface getServer()
+	{
+		return server;
+	}
+
+	public void setServer(TrelloServerInterface server)
+	{
+		this.server = server;
+	}
+
+	public BorderPane getMainView()
+	{
+		return mainView;
+	}
+
+	public void setMainView(BorderPane mainView)
+	{
+		this.mainView = mainView;
+	}
+
+	public User getCurrentUser()
+	{
+		return currentUser;
+	}
+
+	public void setCurrentUser(User currentUser)
+	{
+		this.currentUser = currentUser;
+	}
+
+	public Board getCurrentBoard()
+	{
+		return currentBoard;
+	}
+
+	public void setCurrentBoard(Board currentBoard)
+	{
+		this.currentBoard = currentBoard;
+	}
+
+	public ToolbarController getToolbar()
+	{
+		return toolbar;
+	}
+
+	public void setToolbar(ToolbarController toolbar)
+	{
+		this.toolbar = toolbar;
+	}
+
+	public boolean getIsUnsavedData()
+	{
+		return isUnsavedData;
+	}
+
+	public void setIsUnsavedData(boolean isUnsavedData)
+	{
+		this.isUnsavedData = isUnsavedData;
+	}
+	
+	public ArrayList<User> getAllUsers()
+	{
+		try
+		{
+			return server.getUsers();
+		} catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

@@ -21,6 +21,7 @@ public class ListController implements ControllerInterface
 	BList blist;
 	GridPane parentGrid;
 	ArrayList<Card> cards;
+	int addedCards = 0;
 
     @FXML
     private Accordion cardAccordion;
@@ -45,35 +46,36 @@ public class ListController implements ControllerInterface
 		{
 			TitledPane view = loader.load();
 			CardController cont = loader.getController();
-			cont.setupScene(card, mc, parentGrid);
+			cont.setupScene(card, addedCards, mc, parentGrid);
 			
 	    	cardAccordion.getPanes().add(view);
-
+	    	addedCards++;
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
     }
     
-    public void setupScene(BList blist, MainController mc, BoardController bc)
+    public void setupScene(BList blist, int index, MainController mc, BoardController bc)
     {
     	this.blist = blist;
     	this.mc = mc;
     	parentGrid = bc.listGridPane;
     	listNameLabel.setText(blist.getName());
+    	listNameLabel.setId("listNameLabel" + index);
+    	cardAccordion.setId("cardAccordion" + index);
     	
     	cards = blist.getCards().getMembers();
     	for (Card card : cards)
     	{
     		addCardView(card);
     	}
-    	// accordion.getPanes().add(pane1);
     }
 
 	public void receiveString(String cardName)
 	{
 		Card newCard = new Card(cardName, blist);
-		blist.addCard(newCard, mc.currentUser);
+		blist.addCard(newCard, mc.getCurrentUser());
 		mc.updateBoard();
 		addCardView(newCard);
 	}

@@ -25,6 +25,7 @@ public class SavePopupController
     @FXML
     void onClickDontSaveButton(ActionEvent event) 
     {
+    	mc.setIsUnsavedData(false);
     	stage.close();
     	leave();
     }

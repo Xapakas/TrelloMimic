@@ -22,6 +22,7 @@ public class BoardController implements ControllerInterface
 	ArrayList<BList> BLists;
 	ArrayList<TitledPane> BListViews;
 	int columns;
+	int addedLists = 0;
 	
 	@FXML
     private Label boardNameLabel;
@@ -67,8 +68,7 @@ public class BoardController implements ControllerInterface
 	
 	public void receiveString(String blistName)
 	{
-		BList newList = new BList(blistName, mc.currentBoard);
-//		mc.currentBoard.addList(newList);
+		BList newList = new BList(blistName, mc.getCurrentBoard());
 		mc.updateBoard();
 		addListView(newList);
 	}
@@ -81,10 +81,11 @@ public class BoardController implements ControllerInterface
 		{
 			TitledPane view = loader.load();
 			ListController cont = loader.getController();
-			cont.setupScene(list, mc, this);
+			cont.setupScene(list, addedLists, mc, this);
 			listGridPane.addColumn(columns);
 			listGridPane.add(view, columns, 0);
 			columns++;
+			addedLists++;
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -93,8 +94,8 @@ public class BoardController implements ControllerInterface
 	
 	public void setupScene()
 	{
-		boardNameLabel.setText(mc.currentBoard.getName());
-		BLists = mc.currentBoard.getLists().getMembers();
+		boardNameLabel.setText(mc.getCurrentBoard().getName());
+		BLists = mc.getCurrentBoard().getLists().getMembers();
 		BListViews = new ArrayList<TitledPane>();
 		columns = 0;
 	

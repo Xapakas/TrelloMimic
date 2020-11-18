@@ -74,7 +74,7 @@ public class CardController implements ControllerInterface
     	if (selectedFlowPane == componentsFlowPane)
     	{
     		Component newComponent = new Component(message, 5); // max capacity... what? 0_o
-    		card.addComponent(newComponent, mc.currentUser);
+    		card.addComponent(newComponent, card.getOwner());
     		mc.updateBoard();
 			addComponent(newComponent);
     		selectedFlowPane = null;
@@ -93,7 +93,7 @@ public class CardController implements ControllerInterface
 			{
 				if (user.getName().equals(message))
 				{
-					card.addUser(user, mc.currentUser);
+					card.addUser(user, card.getOwner());
 					mc.updateBoard();
 					addMember(user);
 				}
@@ -125,13 +125,14 @@ public class CardController implements ControllerInterface
     	membersFlowPane.getChildren().add(newLabel);
     }
     
-    public void setupScene(Card card, MainController mc, GridPane parentGrid)
+    public void setupScene(Card card, int index, MainController mc, GridPane parentGrid)
     {
     	this.mc = mc;
     	this.parentGrid = parentGrid;
     	this.card = card;
     	
     	cardNameLabel.setText(card.getName());
+    	cardNameLabel.setId("cardNameLabel" + index);
     	
     	blabels = card.getLabels().getMembers();
     	components = card.getComponents().getMembers();
