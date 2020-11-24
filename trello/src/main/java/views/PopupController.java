@@ -17,7 +17,8 @@ public class PopupController
     private Button closeButton;
 
     @FXML
-    void onClickCloseButton(ActionEvent event) {
+    void onClickCloseButton(ActionEvent event) 
+    {
     	stage.close();
     }
 	

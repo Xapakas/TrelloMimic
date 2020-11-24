@@ -39,8 +39,8 @@ class CardTest
 		card2 = new Card("cardashian",list1);
 		label1 = new BLabel("libel");
 		label2 = new BLabel("label of lontents");
-		component1 = new Component("calm pown it", 5);
-		component2 = new Component("comp own it", 3);
+//		component1 = new Component("calm pown it", 5);
+//		component2 = new Component("comp own it", 3);
 	}
 
 	@Test

@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.UserController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3e6a88;" stylesheets="@fun.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.UserController">
    <top>
-      <VBox prefHeight="74.0" prefWidth="600.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="74.0" prefWidth="600.0" style="-fx-alignment: center; -fx-border-color: black; -fx-background-radius: 20;" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER">
                <VBox.margin>
@@ -25,7 +25,7 @@
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <Label id="userNameLabel" fx:id="userNameLabel" text="[null]">
+                  <Label id="userNameLabel" fx:id="userNameLabel" text="[null]" textFill="#58641d">
                      <font>
                         <Font size="36.0" />
                      </font>

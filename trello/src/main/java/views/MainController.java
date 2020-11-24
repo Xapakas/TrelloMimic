@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -216,7 +217,30 @@ public class MainController
 		{
 			e.printStackTrace();
 		}
-
+	}
+	
+	public void showDropdownPopup(String typeOrDesc, ObservableList<String> options, 
+			CardController cardController)
+	{
+		Stage stage = new Stage();
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("../views/DropdownPopup.fxml"));
+		VBox view;
+		try
+		{
+			view = loader.load();
+			DropdownController cont = loader.getController();
+			cont.setupScene(typeOrDesc, options, cardController, stage);
+			
+			Scene scene = new Scene(view);
+			stage.setScene(scene);
+			stage.setTitle("Create your component...");
+			stage.show();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void updateBoard()

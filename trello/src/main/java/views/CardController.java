@@ -2,15 +2,23 @@ package views;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import myTrello.Card;
 import myTrello.Component;
+import myTrello.ComponentFactory;
+import myTrello.DayComponent;
+import myTrello.TopicComponent;
+import myTrello.UrgencyComponent;
 import myTrello.User;
 import myTrello.BLabel;
 
@@ -22,7 +30,11 @@ public class CardController implements ControllerInterface
 	ArrayList<Component> components;
 	ArrayList<User> members;
 	FlowPane selectedFlowPane;
-	Card card;
+	String currentComponentType;
+	String currentComponentDescription;
+	Card card; 
+	Map <String, String[]> compDictionary;
+	
 	int addedLabels = 0;
 	int addedComponents = 0;
 	int addedMembers = 0;
@@ -51,8 +63,10 @@ public class CardController implements ControllerInterface
     @FXML
     void onClickAddComponent(ActionEvent event) 
     {
-    	selectedFlowPane = componentsFlowPane;
-    	mc.showInputPopupView("Enter the name of your new component!", this);
+    	selectedFlowPane = componentsFlowPane;    	
+    	ObservableList<String> options = FXCollections.observableArrayList();
+    	options.addAll(new String[]{"Day", "Urgency", "Topic"});
+    	mc.showDropdownPopup("type", options, this);
     }
 
     @FXML
@@ -73,11 +87,11 @@ public class CardController implements ControllerInterface
 	{
     	if (selectedFlowPane == componentsFlowPane)
     	{
-    		Component newComponent = new Component(message, 5); // max capacity... what? 0_o
-    		card.addComponent(newComponent, card.getOwner());
-    		mc.updateBoard();
-			addComponent(newComponent);
-    		selectedFlowPane = null;
+////    		Component newComponent = new Component(message, 5); // max capacity... what? 0_o
+//    		card.addComponent(newComponent, card.getOwner());
+//    		mc.updateBoard();
+//			addComponent(newComponent);
+//    		selectedFlowPane = null;
     	}
     	else if (selectedFlowPane == labelsFlowPane)
     	{
@@ -114,6 +128,9 @@ public class CardController implements ControllerInterface
     	addedComponents++;
     	Label newLabel = new Label(component.getDescription());
     	newLabel.setId("componentLabel" + addedComponents);
+
+    	Paint.valueOf(component.getColor());
+    	newLabel.setTextFill(Paint.valueOf(component.getColor()));
     	componentsFlowPane.getChildren().add(newLabel);
     }
     
@@ -130,7 +147,7 @@ public class CardController implements ControllerInterface
     	this.mc = mc;
     	this.parentGrid = parentGrid;
     	this.card = card;
-    	
+
     	cardNameLabel.setText(card.getName());
     	cardNameLabel.setId("cardNameLabel" + index);
     	
@@ -153,5 +170,37 @@ public class CardController implements ControllerInterface
     		addMember(member);
     	}
     }
+
+	public void receiveCompType(String choice)
+	{
+		currentComponentType = choice;
+		ObservableList<String> options = FXCollections.observableArrayList();
+
+		if (choice.equals("Day"))
+		{
+			options.addAll(new DayComponent(null).getDescOptions());
+		}
+		else if (choice.equals("Urgency"))
+		{
+			options.addAll(new UrgencyComponent(null).getDescOptions());
+		}
+		else if (choice.equals("Topic"))
+		{
+			options.addAll(new TopicComponent(null).getDescOptions());
+		}
+		
+		mc.showDropdownPopup("description", options, this);
+	}
+
+	public void receiveCompDesc(String choice)
+	{
+		currentComponentDescription = choice;
+		Component component = ComponentFactory.createComponent(currentComponentType, 
+				currentComponentDescription);
+		card.addComponent(component, card.getOwner());
+		mc.updateBoard();
+		addComponent(component);
+		selectedFlowPane = null;
+	}
     
 }

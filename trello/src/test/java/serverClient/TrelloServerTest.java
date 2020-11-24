@@ -26,6 +26,10 @@ class TrelloServerTest
 	Board board3;
 	Board board4;
 	Board board5;
+	BList blist1;
+	Card card1;
+	BLabel blabel1;
+	DayComponent daycomp;
 
 	@BeforeEach
 	void setUp() throws Exception
@@ -49,23 +53,41 @@ class TrelloServerTest
 		try
 		{
 			tp = (TrelloServerInterface) registry.lookup("TRELLO");
+			tp.loadUsers();
 			noah = tp.authenticateUser("Noah","hunter2");
 			assertEquals((noah==null), false);
 			evildoer = tp.authenticateUser("Hackerman","wrongpassword");
 			assertEquals((evildoer==null), true);
 			
-			board1 = tp.getBoard("testBoard", noah);
-			assertEquals((board1==null),false);
-			board2 = tp.getBoard("fakeBoard", noah);
-			assertEquals((board2==null),true);
+			board1 = tp.createBoard("testBoard", noah);
+			blist1 = new BList("testList", board1);
+			card1 = new Card("testCard", blist1);
+			blabel1 = new BLabel("testLabel");
+			card1.addLabel(blabel1, card1.getOwner());
+			daycomp = new DayComponent("Wednesday");
+			card1.addComponent(daycomp, card1.getOwner());
 			
-			board3 = tp.createBoard("thirdBoard", noah);
+			tp.updateBoard(board1, board1, noah);
 			
-			board4 = new Board("clientBoard", noah);
-			tp.updateBoard(board3, board4, noah);
+			Board board1copy = tp.getBoard("testBoard", noah);
+			assertEquals((board1copy==null),false);
+			assertEquals((board1.equals(board1copy)),true); // every attribute is the same
 			
-			board5 = tp.getBoard("clientBoard", noah);
-			assertEquals((board5==null),false);
+			assertEquals((tp.getBoard("fakeBoard", noah)==null),true);
+			
+			ArrayList<User> users = tp.getUsers();
+			tp.saveUsers();
+			tp.loadUsers();
+			ArrayList<User> users2 = tp.getUsers();
+			assertEquals((users.equals(users2)), true);
+			
+			assertEquals((tp.getBoard("testBoard", noah)==null),false);
+			tp.removeBoard("testBoard", noah);
+			tp.saveUsers();
+			tp.loadUsers();
+			assertEquals((tp.getBoard("testBoard", noah)==null),true);
+			
+			tp.saveUsers();
 		} 
 		catch (RemoteException e)
 		{

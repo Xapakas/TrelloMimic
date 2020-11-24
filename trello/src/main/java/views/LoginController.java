@@ -62,10 +62,8 @@ public class LoginController
 			mc.setServer(server);
 		} catch (RemoteException | NotBoundException e)
 		{
-			e.printStackTrace();
 			mc.showPopupView("Server error: recheck server name and try again.");
 			clearTextFields();
-
 			connected = false;
 		}
 		if (connected)
