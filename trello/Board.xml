@@ -9,8 +9,17 @@
     <void property="members">
      <void method="add">
       <object class="myTrello.User" id="User0">
-       <void property="boards">
+       <void property="boardsMemberOf">
         <object class="myTrello.HasMembersList" id="HasMembersList0">
+         <void property="members">
+          <void method="add">
+           <object idref="Board0"/>
+          </void>
+         </void>
+        </object>
+       </void>
+       <void property="boardsOwned">
+        <object class="myTrello.HasMembersList" id="HasMembersList1">
          <void property="members">
           <void method="add">
            <object idref="Board0"/>

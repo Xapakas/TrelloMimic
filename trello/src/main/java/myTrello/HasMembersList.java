@@ -7,10 +7,12 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class HasMembersList<T> implements HasMembers<T>
+public class HasMembersList<T> implements HasMembers<T>, Serializable
 {
+	private static final long serialVersionUID = 7873205838468161779L;
 	ArrayList<T> members;
 
 	public HasMembersList()

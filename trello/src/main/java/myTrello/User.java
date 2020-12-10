@@ -7,20 +7,25 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class User
+public class User implements Serializable
 {
+	private static final long serialVersionUID = -3507397639080750095L;
 	String name;
 	String password;
-	HasMembersList<Board> boards;
-	
+	HasMembersList<Board> boardsOwned;
+	HasMembersList<Board> boardsMemberOf;
+
 	public User() {}
 	
 	public User(String name, String password)
 	{
 		this.name = name;
 		this.password = password;
-		boards = new HasMembersList<Board>();
+		boardsOwned = new HasMembersList<Board>();
+		boardsMemberOf = new HasMembersList<Board>();
 	}
 	
 	public boolean login(String username, String entered_password)
@@ -52,25 +57,55 @@ public class User
 		this.password = password;
 	}
 
-	public HasMembersList<Board> getBoards()
+//	public HasMembersList<Board> getboardsOwned()
+//	{
+//		return boardsOwned;
+//	}
+//
+//	public void setboardsOwned(HasMembersList<Board> boardsOwned)
+//	{
+//		this.boardsOwned = boardsOwned;
+//	}
+	
+	public HasMembersList<Board> getBoardsOwned()
 	{
-		return boards;
+		return boardsOwned;
 	}
 
-	public void setBoards(HasMembersList<Board> boards)
+	public void setBoardsOwned(HasMembersList<Board> boardsOwned)
 	{
-		this.boards = boards;
+		this.boardsOwned = boardsOwned;
 	}
 
-	public boolean addBoard(Board myBoard)
+	public HasMembersList<Board> getBoardsMemberOf()
 	{
-		return boards.addMember(myBoard);
+		return boardsMemberOf;
+	}
+
+	public void setBoardsMemberOf(HasMembersList<Board> boardsMemberOf)
+	{
+		this.boardsMemberOf = boardsMemberOf;
+	}
+
+	public boolean addBoardOwned(Board myBoard)
+	{
+		return boardsOwned.addMember(myBoard);
 	}
 	
-	public boolean removeBoard(Board myBoard)
+	public boolean removeBoardOwned(Board myBoard)
 	{
 		myBoard.setOwner(null);
-		return boards.removeMember(myBoard);
+		return boardsOwned.removeMember(myBoard);
+	}
+	
+	public boolean addBoardMemberOf(Board myBoard)
+	{
+		return boardsMemberOf.addMember(myBoard);
+	}
+	
+	public boolean removeBoardMemberOf(Board myBoard)
+	{
+		return boardsMemberOf.removeMember(myBoard);
 	}
 		
 	public void storeToDisk()
@@ -98,6 +133,33 @@ public class User
 		User userInstance = (User) decoder.readObject();
 		return userInstance;
 	}
+	
+	public static void storeListToDisk(ArrayList<User> users)
+	{
+		XMLEncoder encoder = null;
+		try {
+			encoder = new XMLEncoder(new BufferedOutputStream(
+					new FileOutputStream("UserList.xml")));
+		} catch(FileNotFoundException fileNotFound) {
+			System.out.println("ERROR: While Creating or Opening the File "	+ "UserList.xml");
+		}
+		encoder.writeObject(users);
+		encoder.close();
+	}
+	
+	public static ArrayList<User> loadListFromDisk()
+	{
+		XMLDecoder decoder=null;
+		try {
+			decoder=new XMLDecoder(new BufferedInputStream(
+					new FileInputStream("UserList.xml")));
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: File UserList.xml not found");
+		}
+		@SuppressWarnings("unchecked")
+		ArrayList<User> userListInstance = (ArrayList<User>) decoder.readObject();
+		return userListInstance;
+	}
 
 	@Override
 	public boolean equals(Object obj)
@@ -109,11 +171,17 @@ public class User
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (boards == null)
+		if (boardsMemberOf == null)
 		{
-			if (other.boards != null)
+			if (other.boardsMemberOf != null)
 				return false;
-		} else if (!boards.equals(other.boards))
+		} else if (!boardsMemberOf.equals(other.boardsMemberOf))
+			return false;
+		if (boardsOwned == null)
+		{
+			if (other.boardsOwned != null)
+				return false;
+		} else if (!boardsOwned.equals(other.boardsOwned))
 			return false;
 		if (name == null)
 		{
@@ -129,5 +197,36 @@ public class User
 			return false;
 		return true;
 	}
-	
+
+//	@Override
+//	public boolean equals(Object obj)
+//	{
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		User other = (User) obj;
+//		if (boardsOwned == null)
+//		{
+//			if (other.boardsOwned != null)
+//				return false;
+//		} else if (!boardsOwned.equals(other.boardsOwned))
+//			return false;
+//		if (name == null)
+//		{
+//			if (other.name != null)
+//				return false;
+//		} else if (!name.equals(other.name))
+//			return false;
+//		if (password == null)
+//		{
+//			if (other.password != null)
+//				return false;
+//		} else if (!password.equals(other.password))
+//			return false;
+//		return true;
+//	}
+//	
 }

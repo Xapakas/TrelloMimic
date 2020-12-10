@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane stylesheets="@fun.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.ToolbarController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#onClickBack" text="Back" />
+            <Button id="saveButton" fx:id="saveButton" mnemonicParsing="false" onAction="#onClickSave" text="Save" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <Pane prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

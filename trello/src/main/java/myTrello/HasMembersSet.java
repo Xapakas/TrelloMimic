@@ -7,10 +7,12 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class HasMembersSet<T> implements HasMembers<T>
+public class HasMembersSet<T> implements HasMembers<T>, Serializable
 {
+	private static final long serialVersionUID = -7201526687353969157L;
 	HashSet<T> members;
 
 	public HasMembersSet()

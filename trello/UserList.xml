@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_261" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="myTrello.User">
+    <void property="boardsMemberOf">
+     <object class="myTrello.HasMembersList"/>
+    </void>
+    <void property="boardsOwned">
+     <object class="myTrello.HasMembersList"/>
+    </void>
+    <void property="name">
+     <string>Noah</string>
+    </void>
+    <void property="password">
+     <string>hunter2</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="myTrello.User">
+    <void property="boardsMemberOf">
+     <object class="myTrello.HasMembersList"/>
+    </void>
+    <void property="boardsOwned">
+     <object class="myTrello.HasMembersList"/>
+    </void>
+    <void property="name">
+     <string>Hackerman</string>
+    </void>
+    <void property="password">
+     <string>[hacker voice] i&apos;m in</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

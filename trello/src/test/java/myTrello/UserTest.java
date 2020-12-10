@@ -14,6 +14,8 @@ class UserTest
 	Board board1;
 	HasMembersList<Board> testboards;
 	ArrayList<Board> arrayboards;
+	ArrayList<User> userList;
+	ArrayList<User> userDiskList;
 	boolean success;
 	
 	@BeforeEach
@@ -37,11 +39,11 @@ class UserTest
 	@Test
 	void testBoardOwnership() // spec 2
 	{
-		testboards = A.getBoards();
+		testboards = A.getBoardsOwned();
 		arrayboards = testboards.getMembers();
 		assertEquals(arrayboards.get(0),board1);
-		assertEquals(A.removeBoard(board1), true);
-		testboards = A.getBoards();
+		assertEquals(A.removeBoardOwned(board1), true);
+		testboards = A.getBoardsOwned();
 		arrayboards = testboards.getMembers();
 		try {
 			arrayboards.get(0);
@@ -58,5 +60,15 @@ class UserTest
 		User diskA = User.loadFromDisk();
 		assertEquals(A.equals(diskA), true);
 		assertEquals(B.equals(diskA), false);
+		
+		userList = new ArrayList<User>();
+		userList.add(A);
+		userList.add(B);
+		User.storeListToDisk(userList);
+		userDiskList = User.loadListFromDisk();
+		
+		assertEquals(userList.get(0).equals(userDiskList.get(0)), true);
+		assertEquals(userList.get(1).equals(userDiskList.get(1)), true);
+
 	}
 }

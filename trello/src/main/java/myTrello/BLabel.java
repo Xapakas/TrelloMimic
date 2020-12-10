@@ -7,14 +7,16 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 
-public class Label
+public class BLabel implements Serializable
 {
+	private static final long serialVersionUID = 3653095985724535130L;
 	String text;
 	
-	public Label() {}
+	public BLabel() {}
 	
-	public Label(String text) {
+	public BLabel(String text) {
 		this.text = text;
 	}
 
@@ -41,7 +43,7 @@ public class Label
 		encoder.close();
 	}
 	
-	public static Label loadFromDisk()
+	public static BLabel loadFromDisk()
 	{
 		XMLDecoder decoder=null;
 		try {
@@ -50,7 +52,7 @@ public class Label
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: File Label.xml not found");
 		}
-		Label labelInstance = (Label) decoder.readObject();
+		BLabel labelInstance = (BLabel) decoder.readObject();
 		return labelInstance;
 	}
 
@@ -63,7 +65,7 @@ public class Label
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Label other = (Label) obj;
+		BLabel other = (BLabel) obj;
 		if (text == null)
 		{
 			if (other.text != null)
